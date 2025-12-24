@@ -1,203 +1,214 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Casa Web | Landing Pages para Negocios</title>
-  <meta name="description" content="Casa Web diseña landing pages profesionales para negocios que quieren más clientes, más ventas y mejor presencia digital.">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Casa Web | Creamos un sitio web para tu negocio</title>
+    <meta
+      name="description"
+      content="Casa Web diseña landing pages profesionales para negocios que quieren más clientes, más ventas y mejor presencia digital."
+    />
 
-  <style>
-    :root {
-      --primary: #111827;
-      --accent: #2563eb;
-      --bg: #f9fafb;
-      --text: #374151;
-    }
+    <style>
+      :root {
+        --primary: #111827;
+        --accent: #2563eb;
+        --bg: #f9fafb;
+        --text: #374151;
+      }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
 
-    header {
-      background: linear-gradient(135deg, var(--primary), #000);
-      color: #fff;
-      padding: 5rem 1.5rem;
-      text-align: center;
-    }
+      header {
+        background: linear-gradient(135deg, var(--primary), #000);
+        color: #fff;
+        padding: 5rem 1.5rem;
+        text-align: center;
+      }
 
-    header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 1rem;
-    }
+      header h1 {
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+      }
 
-    header p {
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 0 auto 2rem;
-    }
+      header p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 2rem;
+      }
 
-    .btn {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.9rem 1.8rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.2s ease;
-    }
+      .btn {
+        display: inline-block;
+        background: var(--accent);
+        color: #fff;
+        padding: 0.9rem 1.8rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s ease;
+      }
 
-    .btn:hover {
-      background: #1d4ed8;
-    }
+      .btn:hover {
+        background: #1d4ed8;
+      }
 
-    section {
-      padding: 4rem 1.5rem;
-      max-width: 1100px;
-      margin: auto;
-    }
+      section {
+        padding: 4rem 1.5rem;
+        max-width: 1100px;
+        margin: auto;
+      }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
 
-    .card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    }
+      .card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      }
 
-    .card h3 {
-      margin-bottom: 0.5rem;
-      color: var(--primary);
-    }
+      .card h3 {
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+      }
 
-    .pricing {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-    }
+      .pricing {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
+      }
 
-    .price {
-      font-size: 2rem;
-      font-weight: 700;
-      margin: 1rem 0;
-    }
+      .price {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 1rem 0;
+      }
 
-    .cta {
-      background: var(--primary);
-      color: #fff;
-      text-align: center;
-      padding: 4rem 1.5rem;
-    }
+      .cta {
+        background: var(--primary);
+        color: #fff;
+        text-align: center;
+        padding: 4rem 1.5rem;
+      }
 
-    .cta h2 {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
+      .cta h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+      }
 
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
-  </style>
-</head>
-<body>
+      footer {
+        text-align: center;
+        padding: 2rem;
+        font-size: 0.9rem;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HERO -->
+    <header>
+      <h1>Casa Web</h1>
+      <p>
+        Diseñamos landing pages profesionales para negocios que quieren más
+        clientes, más ventas y una presencia digital que sí convierte.
+      </p>
+      <a href="#contacto" class="btn">Quiero mi landing page</a>
+    </header>
 
-  <!-- HERO -->
-  <header>
-    <h1>Casa Web</h1>
-    <p>Diseñamos landing pages profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte.</p>
-    <a href="#contacto" class="btn">Quiero mi landing page</a>
-  </header>
-
-  <!-- BENEFICIOS -->
-  <section>
-    <h2 style="text-align:center; margin-bottom:2rem;">¿Por qué Casa Web?</h2>
-    <div class="features">
-      <div class="card">
-        <h3>🎯 Enfocadas en conversión</h3>
-        <p>Diseñamos páginas pensadas para generar contactos, llamadas y ventas reales.</p>
+    <!-- BENEFICIOS -->
+    <section>
+      <h2 style="text-align: center; margin-bottom: 2rem">
+        ¿Por qué Casa Web?
+      </h2>
+      <div class="features">
+        <div class="card">
+          <h3>🎯 Enfocadas en conversión</h3>
+          <p>
+            Diseñamos páginas pensadas para generar contactos, llamadas y ventas
+            reales.
+          </p>
+        </div>
+        <div class="card">
+          <h3>⚡ Rápidas y ligeras</h3>
+          <p>
+            Landing pages optimizadas para cargar rápido en móvil y desktop.
+          </p>
+        </div>
+        <div class="card">
+          <h3>📱 100% Responsive</h3>
+          <p>Tu sitio se verá perfecto en celular, tablet y computadora.</p>
+        </div>
+        <div class="card">
+          <h3>🛠️ Entrega lista para usar</h3>
+          <p>Te entregamos tu landing page lista para subir a tu hosting.</p>
+        </div>
       </div>
-      <div class="card">
-        <h3>⚡ Rápidas y ligeras</h3>
-        <p>Landing pages optimizadas para cargar rápido en móvil y desktop.</p>
+    </section>
+
+    <!-- PLANES -->
+    <section>
+      <h2 style="text-align: center; margin-bottom: 2rem">
+        Planes simples y claros
+      </h2>
+      <div class="pricing">
+        <div class="card">
+          <h3>Landing Básica</h3>
+          <p class="price">$2,999 MXN</p>
+          <ul>
+            <li>✔ Diseño profesional</li>
+            <li>✔ 1 página</li>
+            <li>✔ Responsive</li>
+            <li>✔ Formulario de contacto</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border: 2px solid var(--accent)">
+          <h3>Landing Pro</h3>
+          <p class="price">$4,999 MXN</p>
+          <ul>
+            <li>✔ Diseño premium</li>
+            <li>✔ Copy optimizado</li>
+            <li>✔ CTA estratégicos</li>
+            <li>✔ Integración WhatsApp</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Landing a Medida</h3>
+          <p class="price">Cotización</p>
+          <ul>
+            <li>✔ Diseño personalizado</li>
+            <li>✔ Integraciones especiales</li>
+            <li>✔ Hosting y dominio</li>
+            <li>✔ Soporte</li>
+          </ul>
+        </div>
       </div>
-      <div class="card">
-        <h3>📱 100% Responsive</h3>
-        <p>Tu sitio se verá perfecto en celular, tablet y computadora.</p>
-      </div>
-      <div class="card">
-        <h3>🛠️ Entrega lista para usar</h3>
-        <p>Te entregamos tu landing page lista para subir a tu hosting.</p>
-      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <div class="cta" id="contacto">
+      <h2>Haz que tu negocio tenga presencia digital hoy</h2>
+      <p>Escríbenos y en pocos días tendrás tu landing page lista.</p>
+      <a href="mailto:contacto@casaweb.mx" class="btn">Contactar ahora</a>
     </div>
-  </section>
 
-  <!-- PLANES -->
-  <section>
-    <h2 style="text-align:center; margin-bottom:2rem;">Planes simples y claros</h2>
-    <div class="pricing">
-      <div class="card">
-        <h3>Landing Básica</h3>
-        <p class="price">$2,999 MXN</p>
-        <ul>
-          <li>✔ Diseño profesional</li>
-          <li>✔ 1 página</li>
-          <li>✔ Responsive</li>
-          <li>✔ Formulario de contacto</li>
-        </ul>
-      </div>
-
-      <div class="card" style="border:2px solid var(--accent);">
-        <h3>Landing Pro</h3>
-        <p class="price">$4,999 MXN</p>
-        <ul>
-          <li>✔ Diseño premium</li>
-          <li>✔ Copy optimizado</li>
-          <li>✔ CTA estratégicos</li>
-          <li>✔ Integración WhatsApp</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h3>Landing a Medida</h3>
-        <p class="price">Cotización</p>
-        <ul>
-          <li>✔ Diseño personalizado</li>
-          <li>✔ Integraciones especiales</li>
-          <li>✔ Hosting y dominio</li>
-          <li>✔ Soporte</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA FINAL -->
-  <div class="cta" id="contacto">
-    <h2>Haz que tu negocio tenga presencia digital hoy</h2>
-    <p>Escríbenos y en pocos días tendrás tu landing page lista.</p>
-    <a href="mailto:contacto@casaweb.mx" class="btn">Contactar ahora</a>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    © 2025 Casa Web · Desarrollo de Landing Pages
-  </footer>
-
-</body>
+    <!-- FOOTER -->
+    <footer>© 2025 Casa Web · Desarrollo de Landing Pages</footer>
+  </body>
 </html>
