@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Casa Web | Creamos un sitio web para tu negocio</title>
+    <title>Casa Web | Landing Pages para Negocios</title>
     <meta
       name="description"
-      content="Casa Web diseña landing pages profesionales para negocios que quieren más clientes, más ventas y mejor presencia digital."
+      content="Casa Web diseña landing pages profesionales para negocios que quieren más clientes y más ventas."
     />
 
     <style>
@@ -69,7 +69,8 @@
         margin: auto;
       }
 
-      .features {
+      .features,
+      .pricing {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 2rem;
@@ -80,6 +81,7 @@
         padding: 2rem;
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        text-align: center;
       }
 
       .card h3 {
@@ -87,16 +89,18 @@
         color: var(--primary);
       }
 
-      .pricing {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 2rem;
-      }
-
       .price {
         font-size: 2rem;
         font-weight: 700;
         margin: 1rem 0;
+      }
+
+      .contact-box {
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
       }
 
       .cta {
@@ -106,16 +110,35 @@
         padding: 4rem 1.5rem;
       }
 
-      .cta h2 {
-        font-size: 2.2rem;
-        margin-bottom: 1rem;
-      }
-
       footer {
         text-align: center;
         padding: 2rem;
         font-size: 0.9rem;
         color: #6b7280;
+      }
+
+      /* BOTÓN FLOTANTE WHATSAPP */
+      .whatsapp-float {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #25d366;
+        color: white;
+        border-radius: 50px;
+        padding: 14px 20px;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 999;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .whatsapp-float:hover {
+        transform: scale(1.05);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
       }
     </style>
   </head>
@@ -125,9 +148,15 @@
       <h1>Casa Web</h1>
       <p>
         Diseñamos landing pages profesionales para negocios que quieren más
-        clientes, más ventas y una presencia digital que sí convierte.
+        clientes, más ventas y presencia digital real.
       </p>
-      <a href="#contacto" class="btn">Quiero mi landing page</a>
+      <a
+        href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
+        class="btn"
+        target="_blank"
+      >
+        💬 Cotiza por WhatsApp
+      </a>
     </header>
 
     <!-- BENEFICIOS -->
@@ -138,77 +167,79 @@
       <div class="features">
         <div class="card">
           <h3>🎯 Enfocadas en conversión</h3>
-          <p>
-            Diseñamos páginas pensadas para generar contactos, llamadas y ventas
-            reales.
-          </p>
+          <p>Páginas diseñadas para generar contactos y ventas.</p>
         </div>
         <div class="card">
-          <h3>⚡ Rápidas y ligeras</h3>
-          <p>
-            Landing pages optimizadas para cargar rápido en móvil y desktop.
-          </p>
+          <h3>⚡ Rápidas</h3>
+          <p>Optimización para carga veloz.</p>
         </div>
         <div class="card">
-          <h3>📱 100% Responsive</h3>
-          <p>Tu sitio se verá perfecto en celular, tablet y computadora.</p>
+          <h3>📱 Responsive</h3>
+          <p>Perfectas en cualquier dispositivo.</p>
         </div>
         <div class="card">
-          <h3>🛠️ Entrega lista para usar</h3>
-          <p>Te entregamos tu landing page lista para subir a tu hosting.</p>
+          <h3>🛠️ Listas</h3>
+          <p>Entrega inmediata.</p>
         </div>
       </div>
     </section>
 
     <!-- PLANES -->
     <section>
-      <h2 style="text-align: center; margin-bottom: 2rem">
-        Planes simples y claros
-      </h2>
+      <h2 style="text-align: center; margin-bottom: 2rem">Planes</h2>
       <div class="pricing">
         <div class="card">
-          <h3>Landing Básica</h3>
+          <h3>Básica</h3>
           <p class="price">$2,999 MXN</p>
-          <ul>
-            <li>✔ Diseño profesional</li>
-            <li>✔ 1 página</li>
-            <li>✔ Responsive</li>
-            <li>✔ Formulario de contacto</li>
-          </ul>
+          <a class="btn" href="https://wa.me/523331713312" target="_blank"
+            >Cotizar</a
+          >
         </div>
-
         <div class="card" style="border: 2px solid var(--accent)">
-          <h3>Landing Pro</h3>
+          <h3>Pro</h3>
           <p class="price">$4,999 MXN</p>
-          <ul>
-            <li>✔ Diseño premium</li>
-            <li>✔ Copy optimizado</li>
-            <li>✔ CTA estratégicos</li>
-            <li>✔ Integración WhatsApp</li>
-          </ul>
+          <a class="btn" href="https://wa.me/523331713312" target="_blank"
+            >Cotizar</a
+          >
         </div>
-
         <div class="card">
-          <h3>Landing a Medida</h3>
+          <h3>A Medida</h3>
           <p class="price">Cotización</p>
-          <ul>
-            <li>✔ Diseño personalizado</li>
-            <li>✔ Integraciones especiales</li>
-            <li>✔ Hosting y dominio</li>
-            <li>✔ Soporte</li>
-          </ul>
+          <a class="btn" href="https://wa.me/523331713312" target="_blank"
+            >Hablar</a
+          >
         </div>
       </div>
     </section>
 
-    <!-- CTA FINAL -->
-    <div class="cta" id="contacto">
-      <h2>Haz que tu negocio tenga presencia digital hoy</h2>
-      <p>Escríbenos y en pocos días tendrás tu landing page lista.</p>
-      <a href="mailto:contacto@casaweb.mx" class="btn">Contactar ahora</a>
+    <!-- CONTACTO -->
+    <section>
+      <div class="contact-box">
+        <h2>Contacto</h2>
+        <p><strong>WhatsApp:</strong> +52 33 3171 3312</p>
+        <a class="btn" href="https://wa.me/523331713312" target="_blank">
+          💬 Escríbenos
+        </a>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="cta">
+      <h2>Tu landing puede estar lista en días</h2>
+      <a class="btn" href="https://wa.me/523331713312" target="_blank">
+        Iniciar WhatsApp
+      </a>
     </div>
 
-    <!-- FOOTER -->
-    <footer>© 2025 Casa Web · Desarrollo de Landing Pages</footer>
+    <!-- BOTÓN FLOTANTE -->
+    <a
+      href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
+      class="whatsapp-float"
+      target="_blank"
+    >
+      💬 WhatsApp
+    </a>
+
+    <footer>© 2025 Casa Web · Landing Pages para Negocios</footer>
   </body>
 </html>
