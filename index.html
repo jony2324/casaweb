@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Casa Web | Landing Pages para Negocios</title>
+    <title>Casa Web | Desarrollo de Landing Pages</title>
     <meta
       name="description"
-      content="Casa Web diseña landing pages profesionales para negocios que quieren más clientes y más ventas."
+      content="Casa Web diseña landing pages profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
     />
 
     <style>
@@ -15,6 +15,8 @@
         --accent: #2563eb;
         --bg: #f9fafb;
         --text: #374151;
+        --muted: #6b7280;
+        --card: #ffffff;
       }
 
       * {
@@ -23,223 +25,443 @@
         padding: 0;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       }
-
       body {
         background: var(--bg);
         color: var(--text);
         line-height: 1.6;
       }
 
-      header {
+      /* HEADER */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: saturate(180%) blur(10px);
+        border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+      }
+      .topbar-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0.85rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--primary);
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary), #000);
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+        flex: 0 0 auto;
+      }
+      .logo svg {
+        display: block;
+      }
+      nav {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .navlink {
+        text-decoration: none;
+        color: var(--primary);
+        font-weight: 700;
+        padding: 0.55rem 0.85rem;
+        border-radius: 10px;
+        transition: background 0.2s ease;
+      }
+      .navlink:hover {
+        background: rgba(37, 99, 235, 0.1);
+      }
+
+      /* HERO */
+      header.hero {
         background: linear-gradient(135deg, var(--primary), #000);
         color: #fff;
         padding: 5rem 1.5rem;
         text-align: center;
       }
-
-      header h1 {
+      header.hero h1 {
         font-size: 2.8rem;
         margin-bottom: 1rem;
       }
-
-      header p {
+      header.hero p {
         font-size: 1.2rem;
-        max-width: 700px;
+        max-width: 760px;
         margin: 0 auto 2rem;
       }
 
+      /* BUTTON */
       .btn {
         display: inline-block;
         background: var(--accent);
         color: #fff;
         padding: 0.9rem 1.8rem;
-        border-radius: 8px;
+        border-radius: 10px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 800;
         transition: 0.2s ease;
       }
-
       .btn:hover {
         background: #1d4ed8;
+        transform: translateY(-1px);
       }
 
+      /* LAYOUT */
       section {
         padding: 4rem 1.5rem;
         max-width: 1100px;
         margin: auto;
       }
 
-      .features,
-      .pricing {
+      .features {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 2rem;
       }
 
       .card {
-        background: #fff;
+        background: var(--card);
         padding: 2rem;
-        border-radius: 12px;
+        border-radius: 14px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        text-align: center;
+      }
+      .card h3 {
+        margin-bottom: 0.6rem;
+        color: var(--primary);
+      }
+      .card ul {
+        margin-top: 1rem;
+        padding-left: 1.1rem;
+      }
+      .card li {
+        margin: 0.4rem 0;
       }
 
-      .card h3 {
-        margin-bottom: 0.5rem;
-        color: var(--primary);
+      .pricing {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
       }
 
       .price {
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: 900;
         margin: 1rem 0;
+        color: var(--primary);
       }
 
-      .contact-box {
-        background: #fff;
-        padding: 2.5rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      }
-
+      /* CTA */
       .cta {
         background: var(--primary);
         color: #fff;
         text-align: center;
         padding: 4rem 1.5rem;
       }
+      .cta h2 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+      }
+      .cta p {
+        max-width: 760px;
+        margin: 0 auto 1.75rem;
+      }
+
+      /* CONTACT TAB/SECTION */
+      .contact-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+      }
+      .contact-box {
+        background: #fff;
+        border-radius: 14px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+      .contact-box h2 {
+        color: var(--primary);
+        margin-bottom: 0.75rem;
+        font-size: 2rem;
+      }
+      .contact-box p {
+        margin-bottom: 1rem;
+        color: var(--text);
+        font-size: 1.05rem;
+      }
+      .contact-meta {
+        margin: 1.25rem 0 1.75rem;
+        color: var(--muted);
+        font-weight: 700;
+      }
 
       footer {
         text-align: center;
-        padding: 2rem;
-        font-size: 0.9rem;
-        color: #6b7280;
+        padding: 2rem 1rem;
+        font-size: 0.95rem;
+        color: var(--muted);
       }
 
-      /* BOTÓN FLOTANTE WHATSAPP */
+      /* WHATSAPP FLOAT */
       .whatsapp-float {
         position: fixed;
         bottom: 20px;
         right: 20px;
         background: #25d366;
         color: white;
-        border-radius: 50px;
-        padding: 14px 20px;
-        font-weight: 600;
+        border-radius: 999px;
+        padding: 14px 18px;
+        font-weight: 900;
         text-decoration: none;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
         display: flex;
         align-items: center;
         gap: 10px;
-        z-index: 999;
+        z-index: 1200;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
-
       .whatsapp-float:hover {
         transform: scale(1.05);
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
       }
+
+      /* Offset anchors for sticky header */
+      .anchor {
+        scroll-margin-top: 90px;
+      }
+
+      /* Responsive tweaks */
+      @media (max-width: 520px) {
+        header.hero h1 {
+          font-size: 2.2rem;
+        }
+        header.hero p {
+          font-size: 1.05rem;
+        }
+        .topbar-inner {
+          padding: 0.75rem 1rem;
+        }
+        .navlink {
+          padding: 0.5rem 0.7rem;
+        }
+        .whatsapp-float {
+          padding: 12px 14px;
+        }
+      }
     </style>
   </head>
+
   <body>
-    <!-- HERO -->
-    <header>
+    <!-- Header -->
+    <div class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#home" aria-label="Casa Web Home">
+          <span class="logo" aria-hidden="true">
+            <!-- Simple house logo -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3 11.5L12 4l9 7.5"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M6.5 10.5V20h11V10.5"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M10 20v-6h4v6"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span>Casa Web</span>
+        </a>
+
+        <nav>
+          <a class="navlink" href="#home">Home</a>
+          <a class="navlink" href="#contacto">Contacto</a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <div id="home" class="anchor"></div>
+    <header class="hero">
       <h1>Casa Web</h1>
       <p>
         Diseñamos landing pages profesionales para negocios que quieren más
-        clientes, más ventas y presencia digital real.
+        clientes, más ventas y una presencia digital que sí convierte.
       </p>
       <a
-        href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
         class="btn"
         target="_blank"
+        href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
       >
-        💬 Cotiza por WhatsApp
+        Quiero mi landing page
       </a>
     </header>
 
-    <!-- BENEFICIOS -->
     <section>
       <h2 style="text-align: center; margin-bottom: 2rem">
         ¿Por qué Casa Web?
       </h2>
+
       <div class="features">
         <div class="card">
           <h3>🎯 Enfocadas en conversión</h3>
-          <p>Páginas diseñadas para generar contactos y ventas.</p>
+          <p>
+            Diseñamos páginas pensadas para generar contactos, llamadas y ventas
+            reales.
+          </p>
         </div>
+
         <div class="card">
-          <h3>⚡ Rápidas</h3>
-          <p>Optimización para carga veloz.</p>
+          <h3>⚡ Rápidas y ligeras</h3>
+          <p>
+            Landing pages optimizadas para cargar rápido en móvil y desktop.
+          </p>
         </div>
+
         <div class="card">
-          <h3>📱 Responsive</h3>
-          <p>Perfectas en cualquier dispositivo.</p>
+          <h3>📱 100% Responsive</h3>
+          <p>Tu sitio se verá perfecto en celular, tablet y computadora.</p>
         </div>
+
         <div class="card">
-          <h3>🛠️ Listas</h3>
-          <p>Entrega inmediata.</p>
+          <h3>🛠️ Entrega lista para usar</h3>
+          <p>Te entregamos tu landing page lista para subir a tu hosting.</p>
         </div>
       </div>
     </section>
 
-    <!-- PLANES -->
     <section>
-      <h2 style="text-align: center; margin-bottom: 2rem">Planes</h2>
+      <h2 style="text-align: center; margin-bottom: 2rem">
+        Planes simples y claros
+      </h2>
+
       <div class="pricing">
         <div class="card">
-          <h3>Básica</h3>
+          <h3>Landing Básica</h3>
           <p class="price">$2,999 MXN</p>
-          <a class="btn" href="https://wa.me/523331713312" target="_blank"
-            >Cotizar</a
-          >
+          <ul>
+            <li>✔ Diseño profesional</li>
+            <li>✔ 1 página</li>
+            <li>✔ Responsive</li>
+            <li>✔ Formulario de contacto</li>
+          </ul>
+          <div style="margin-top: 1.5rem">
+            <a
+              class="btn"
+              target="_blank"
+              href="https://wa.me/523331713312?text=Hola%2C%20quiero%20la%20Landing%20B%C3%A1sica%20de%20Casa%20Web."
+              >Quiero mi landing page</a
+            >
+          </div>
         </div>
+
         <div class="card" style="border: 2px solid var(--accent)">
-          <h3>Pro</h3>
+          <h3>Landing Pro</h3>
           <p class="price">$4,999 MXN</p>
-          <a class="btn" href="https://wa.me/523331713312" target="_blank"
-            >Cotizar</a
-          >
+          <ul>
+            <li>✔ Diseño premium</li>
+            <li>✔ Copy optimizado</li>
+            <li>✔ CTA estratégicos</li>
+            <li>✔ Integración WhatsApp</li>
+          </ul>
+          <div style="margin-top: 1.5rem">
+            <a
+              class="btn"
+              target="_blank"
+              href="https://wa.me/523331713312?text=Hola%2C%20quiero%20la%20Landing%20Pro%20de%20Casa%20Web."
+              >Quiero mi landing page</a
+            >
+          </div>
         </div>
+
         <div class="card">
-          <h3>A Medida</h3>
+          <h3>Landing a Medida</h3>
           <p class="price">Cotización</p>
-          <a class="btn" href="https://wa.me/523331713312" target="_blank"
-            >Hablar</a
-          >
+          <ul>
+            <li>✔ Diseño personalizado</li>
+            <li>✔ Integraciones especiales</li>
+            <li>✔ Hosting y dominio</li>
+            <li>✔ Soporte</li>
+          </ul>
+          <div style="margin-top: 1.5rem">
+            <a
+              class="btn"
+              target="_blank"
+              href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20Landing%20a%20Medida%20con%20Casa%20Web."
+              >Quiero mi landing page</a
+            >
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CONTACTO -->
-    <section>
-      <div class="contact-box">
-        <h2>Contacto</h2>
-        <p><strong>WhatsApp:</strong> +52 33 3171 3312</p>
-        <a class="btn" href="https://wa.me/523331713312" target="_blank">
-          💬 Escríbenos
-        </a>
-      </div>
-    </section>
-
-    <!-- CTA -->
     <div class="cta">
-      <h2>Tu landing puede estar lista en días</h2>
-      <a class="btn" href="https://wa.me/523331713312" target="_blank">
-        Iniciar WhatsApp
+      <h2>Haz que tu negocio tenga presencia digital hoy</h2>
+      <p>Escríbenos y en pocos días tendrás tu landing page lista.</p>
+      <a
+        class="btn"
+        target="_blank"
+        href="https://wa.me/523331713312?text=Hola%2C%20quiero%20cotizar%20una%20landing%20page%20con%20Casa%20Web."
+      >
+        Contactar ahora
       </a>
     </div>
 
-    <!-- BOTÓN FLOTANTE -->
+    <!-- CONTACTO (OTRO "TAB") -->
+    <div id="contacto" class="anchor"></div>
+    <div class="contact-wrap">
+      <div class="contact-box">
+        <h2>Contacto</h2>
+        <p>Escríbenos por WhatsApp y te respondemos rápido.</p>
+        <div class="contact-meta">WhatsApp: +52 33 3171 3312</div>
+
+        <a
+          class="btn"
+          target="_blank"
+          href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
+        >
+          Contactar ahora
+        </a>
+      </div>
+    </div>
+
+    <!-- Botón flotante WhatsApp -->
     <a
-      href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
       class="whatsapp-float"
       target="_blank"
+      href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
+      aria-label="Abrir WhatsApp"
     >
       💬 WhatsApp
     </a>
 
-    <footer>© 2025 Casa Web · Landing Pages para Negocios</footer>
+    <footer>© 2025 Casa Web · Desarrollo de Landing Pages</footer>
   </body>
 </html>
