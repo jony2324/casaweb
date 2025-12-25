@@ -94,15 +94,38 @@
         color: #fff;
         padding: 5rem 1.5rem;
         text-align: center;
+
+        /* NUEVO — requerido para video de fondo */
+        position: relative;
+        overflow: hidden;
       }
+
       header.hero h1 {
         font-size: 2.8rem;
         margin-bottom: 1rem;
       }
+
       header.hero p {
         font-size: 1.2rem;
         max-width: 760px;
         margin: 0 auto 2rem;
+      }
+
+      /* NUEVO — Video a tamaño completo del hero */
+      header.hero video.bg-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.35;
+      }
+
+      /* NUEVO — Contenido encima del video */
+      header.hero .content {
+        position: relative;
+        z-index: 2;
       }
 
       /* BUTTON */
@@ -310,34 +333,33 @@
     <!-- HOME -->
     <div id="home" class="anchor"></div>
     <header class="hero">
-      <h1>Casa Web</h1>
-      <p>
-        Diseñamos Paginas Web profesionales para negocios que quieren más
-        clientes, más ventas y una presencia digital que sí convierte.
-      </p>
-      <a
-        class="btn"
-        target="_blank"
-        href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
-      >
-        Quiero mi Pagina Web
-      </a>
+      <!-- VIDEO COMO FONDO COMPLETO -->
       <video
+        class="bg-video"
         src="assets/video-landing.mp4"
         autoplay
         muted
         loop
         playsinline
-        style="
-          margin-top: 2rem;
-          max-width: 900px;
-          width: 100%;
-          border-radius: 14px;
-          box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-        "
-      >
-        Tu navegador no soporta video HTML5.
-      </video>
+      ></video>
+
+      <!-- CONTENIDO ENCIMA DEL VIDEO -->
+      <div class="content">
+        <h1>Casa Web</h1>
+
+        <p>
+          Diseñamos paginas web profesionales para negocios que quieren más
+          clientes, más ventas y una presencia digital que sí convierte.
+        </p>
+
+        <a
+          class="btn"
+          target="_blank"
+          href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20landing%20page%20para%20mi%20negocio."
+        >
+          Quiero mi landing page
+        </a>
+      </div>
     </header>
 
     <section>
