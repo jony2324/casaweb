@@ -3,11 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Casa Web | Desarrollo de Paginas Webs</title>
+
+    <title>Casa Web | Desarrollo de Páginas Web</title>
+
     <meta
       name="description"
-      content="Casa Web diseña Pagina Web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
+      content="Casa Web diseña páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
     />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#111827" />
+
+    <!-- Canonical (cámbialo por tu dominio real) -->
+    <link rel="canonical" href="https://casaweb.com.mx/" />
+
+    <!-- Favicons -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/logo/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/logo/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/logo/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="assets/logo/site.webmanifest" />
+
+    <!-- (Opcional) Safari pinned tab (requiere svg monocromático) -->
+    <link
+      rel="mask-icon"
+      href="assets/logo/safari-pinned-tab.svg"
+      color="#111827"
+    />
+
+    <!-- Open Graph (para preview en WhatsApp/Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Casa Web" />
+    <meta property="og:title" content="Casa Web | Desarrollo de Páginas Web" />
+    <meta
+      property="og:description"
+      content="Diseñamos páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
+    />
+    <meta property="og:url" content="https://casaweb.com.mx/" />
+    <meta property="og:image" content="assets/logo/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Casa Web | Desarrollo de Páginas Web" />
+    <meta
+      name="twitter:description"
+      content="Páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
+    />
+    <meta name="twitter:image" content="assets/logo/og-image.jpg" />
 
     <style>
       :root {
@@ -31,6 +87,19 @@
         line-height: 1.6;
       }
 
+      /* Utilidad: oculta visualmente pero mantiene para SEO/lectores */
+      .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+
       /* HEADER */
       .topbar {
         position: sticky;
@@ -49,8 +118,10 @@
         justify-content: space-between;
         gap: 1rem;
       }
+
+      /* Solo branding (solo logo) */
       .brand {
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
@@ -58,19 +129,24 @@
         font-weight: 800;
         letter-spacing: 0.2px;
       }
+
+      /* LOGO (limpio y responsive) */
       .logo {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: linear-gradient(135deg, var(--primary), #000);
-        display: grid;
-        place-items: center;
-        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
-        flex: 0 0 auto;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .logo svg {
+      .logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
         display: block;
       }
+
       nav {
         display: flex;
         gap: 0.5rem;
@@ -94,38 +170,29 @@
         color: #fff;
         padding: 5rem 1.5rem;
         text-align: center;
-
-        /* NUEVO — requerido para video de fondo */
         position: relative;
         overflow: hidden;
       }
-
-      header.hero h1 {
-        font-size: 2.8rem;
-        margin-bottom: 1rem;
-      }
-
-      header.hero p {
-        font-size: 1.2rem;
-        max-width: 760px;
-        margin: 0 auto 2rem;
-      }
-
-      /* NUEVO — Video a tamaño completo del hero */
       header.hero video.bg-video {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
         opacity: 0.35;
       }
-
-      /* NUEVO — Contenido encima del video */
       header.hero .content {
         position: relative;
         z-index: 2;
+      }
+      header.hero h1 {
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+      }
+      header.hero p {
+        font-size: 1.2rem;
+        max-width: 760px;
+        margin: 0 auto 2rem;
       }
 
       /* BUTTON */
@@ -150,13 +217,11 @@
         max-width: 1100px;
         margin: auto;
       }
-
       .features {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 2rem;
       }
-
       .card {
         background: var(--card);
         padding: 2rem;
@@ -167,25 +232,24 @@
         margin-bottom: 0.6rem;
         color: var(--primary);
       }
-      .card ul {
-        margin-top: 1rem;
-        padding-left: 1.1rem;
-      }
-      .card li {
-        margin: 0.4rem 0;
-      }
 
       .pricing {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         gap: 2rem;
       }
-
       .price {
         font-size: 2rem;
         font-weight: 900;
         margin: 1rem 0;
         color: var(--primary);
+      }
+      .card ul {
+        margin-top: 1rem;
+        padding-left: 1.1rem;
+      }
+      .card li {
+        margin: 0.4rem 0;
       }
 
       /* CTA */
@@ -204,7 +268,7 @@
         margin: 0 auto 1.75rem;
       }
 
-      /* CONTACT TAB/SECTION */
+      /* CONTACT */
       .contact-wrap {
         max-width: 1100px;
         margin: 0 auto;
@@ -285,8 +349,13 @@
         .whatsapp-float {
           padding: 12px 14px;
         }
+        .logo {
+          width: 40px;
+          height: 40px;
+        }
       }
     </style>
+
     <!-- Google tag (gtag.js) -->
     <script
       async
@@ -298,7 +367,6 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-P3G7GY5DJY");
     </script>
   </head>
@@ -309,7 +377,14 @@
       <div class="topbar-inner">
         <a class="brand" href="#home" aria-label="Casa Web Home">
           <span class="logo" aria-hidden="true">
-            <img src="assets/logo/logo.png" alt="Logo" width="90" height="90" />
+            <!-- Logo Retina: necesitas logo.png y logo@2x.png -->
+            <img
+              src="assets/logo/logo.png"
+              srcset="assets/logo/logo.png 1x, assets/logo/logo@2x.png 2x"
+              alt="Casa Web"
+              loading="eager"
+              decoding="async"
+            />
           </span>
         </a>
 
@@ -323,6 +398,9 @@
     <!-- HOME -->
     <div id="home" class="anchor"></div>
     <header class="hero">
+      <!-- H1 para SEO, oculto visualmente (para que no se vea texto si no quieres) -->
+      <h1 class="sr-only">Casa Web</h1>
+
       <!-- VIDEO COMO FONDO COMPLETO -->
       <video
         class="bg-video"
@@ -335,10 +413,12 @@
 
       <!-- CONTENIDO ENCIMA DEL VIDEO -->
       <div class="content">
-        <h1>CASA WEB</h1>
+        <p style="font-size: 1.35rem; font-weight: 900; letter-spacing: 0.5px">
+          CASA WEB
+        </p>
 
         <p>
-          Diseñamos paginas web profesionales para negocios que quieren más
+          Diseñamos páginas web profesionales para negocios que quieren más
           clientes, más ventas y una presencia digital que sí convierte.
         </p>
 
@@ -350,7 +430,6 @@
           Quiero mi landing page
         </a>
       </div>
-      <link rel="icon" type="image/png" href="assets/logo/logo.png" />
     </header>
 
     <section>
@@ -369,7 +448,7 @@
 
         <div class="card">
           <h3>⚡ Rápidas y ligeras</h3>
-          <p>Pagina Web optimizadas para cargar rápido en móvil y desktop.</p>
+          <p>Páginas web optimizadas para cargar rápido en móvil y desktop.</p>
         </div>
 
         <div class="card">
@@ -399,7 +478,7 @@
               class="btn"
               target="_blank"
               href="https://wa.me/523331713312?text=Hola%2C%20quiero%20la%20Landing%20B%C3%A1sica%20de%20Casa%20Web."
-              >Quiero mi Pagina Web</a
+              >Quiero mi Página Web</a
             >
           </div>
         </div>
@@ -418,7 +497,7 @@
               class="btn"
               target="_blank"
               href="https://wa.me/523331713312?text=Hola%2C%20quiero%20la%20Landing%20Pro%20de%20Casa%20Web."
-              >Quiero mi Pagina Web</a
+              >Quiero mi Página Web</a
             >
           </div>
         </div>
@@ -437,7 +516,7 @@
               class="btn"
               target="_blank"
               href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20Landing%20a%20Medida%20con%20Casa%20Web."
-              >Quiero mi Pagina Web</a
+              >Quiero mi Página Web</a
             >
           </div>
         </div>
@@ -446,7 +525,7 @@
 
     <div class="cta">
       <h2>Haz que tu negocio tenga presencia digital HOY</h2>
-      <p>Escríbenos y en pocos días tendrás tu Pagina Web lista.</p>
+      <p>Escríbenos y en pocos días tendrás tu Página Web lista.</p>
       <a
         class="btn"
         target="_blank"
@@ -456,7 +535,7 @@
       </a>
     </div>
 
-    <!-- CONTACTO (OTRO "TAB") -->
+    <!-- CONTACTO -->
     <div id="contacto" class="anchor"></div>
     <div class="contact-wrap">
       <div class="contact-box">
