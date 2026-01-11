@@ -127,15 +127,24 @@
         letter-spacing: 0.2px;
       }
 
-      /* LOGO (limpio y responsive) */
+      /* ✅ LOGO MÁS GRANDE + HOVER */
       .logo {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
+        width: 62px; /* antes 44px */
+        height: 62px; /* antes 44px */
+        border-radius: 16px; /* un poquito más */
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
+
+        /* animación */
+        transform: translateZ(0);
+        transition: transform 0.22s ease, filter 0.22s ease;
+        will-change: transform;
+      }
+      .brand:hover .logo {
+        transform: scale(1.12);
+        filter: brightness(1.05) saturate(1.05);
       }
       .logo img {
         width: 100%;
@@ -378,8 +387,9 @@
           padding: 12px 14px;
         }
         .logo {
-          width: 40px;
-          height: 40px;
+          width: 56px;
+          height: 56px;
+          border-radius: 14px;
         }
       }
     </style>
