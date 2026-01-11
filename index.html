@@ -13,29 +13,27 @@
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#111827" />
 
-    <!-- Canonical (cámbialo por tu dominio real) -->
+    <!-- Canonical -->
     <link rel="canonical" href="https://casaweb.com.mx/" />
 
-    <!-- Favicons -->
+    <!-- Favicons (rutas ABSOLUTAS + cache-busting) -->
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="assets/logo/logo.png"
+      href="/assets/logo/logo.png?v=1"
     />
     <link
       rel="icon"
       type="image/png"
       sizes="16x16"
-      href="assets/logo/logo.png"
+      href="/assets/logo/logo.png?v=1"
     />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/logo.png" />
-    <link rel="manifest" href="assets/logo/logo.png" />
-
-    <!-- (Opcional) Safari pinned tab (requiere svg monocromático) -->
-    <link rel="mask-icon" href="assets/logo/logo.png" color="#111827" />
-
-    <!-- Open Graph (para preview en WhatsApp/Facebook) -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/logo/logo.png?v=1"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Casa Web" />
     <meta property="og:title" content="Casa Web | Desarrollo de Páginas Web" />
@@ -44,18 +42,24 @@
       content="Diseñamos páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
     />
     <meta property="og:url" content="https://casaweb.com.mx/" />
-    <meta property="og:image" content="assets/logo/logo.png" />
+    <meta
+      property="og:image"
+      content="https://casaweb.com.mx/assets/logo/logo.png"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- Twitter Card -->
+    <!-- Twitter Card (URL completa) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Casa Web | Desarrollo de Páginas Web" />
     <meta
       name="twitter:description"
       content="Páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
     />
-    <meta name="twitter:image" content="assets/logo/logo.png" />
+    <meta
+      name="twitter:image"
+      content="https://casaweb.com.mx/assets/logo/logo.png"
+    />
 
     <style>
       :root {
@@ -129,9 +133,9 @@
 
       /* ✅ LOGO MÁS GRANDE + HOVER */
       .logo {
-        width: 62px; /* antes 44px */
-        height: 62px; /* antes 44px */
-        border-radius: 16px; /* un poquito más */
+        width: 62px;
+        height: 62px;
+        border-radius: 16px;
         overflow: hidden;
         display: flex;
         align-items: center;
