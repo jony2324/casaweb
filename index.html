@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -80,7 +80,11 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
       }
       body {
         background: var(--bg);
@@ -143,7 +147,9 @@
 
         /* animación */
         transform: translateZ(0);
-        transition: transform 0.22s ease, filter 0.22s ease;
+        transition:
+          transform 0.22s ease,
+          filter 0.22s ease;
         will-change: transform;
       }
       .brand:hover .logo {
@@ -206,7 +212,7 @@
       }
 
       /* 🟡 BOTÓN DORADO PREMIUM (SÓLIDO) */
-      .btn {
+      .btn-gold {
         display: inline-block;
         background: linear-gradient(
           135deg,
@@ -221,14 +227,17 @@
         font-weight: 900;
         letter-spacing: 0.3px;
         background-clip: padding-box;
-        box-shadow: 0 8px 22px rgba(212, 175, 55, 0.6),
+        box-shadow:
+          0 8px 22px rgba(212, 175, 55, 0.6),
           inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
         position: relative;
         overflow: hidden;
       }
 
-      .btn::before {
+      .btn-gold::before {
         content: "";
         position: absolute;
         inset: 0;
@@ -242,13 +251,14 @@
         transition: opacity 0.4s ease;
       }
 
-      .btn:hover::before {
+      .btn-gold:hover::before {
         opacity: 1;
       }
 
-      .btn:hover {
+      .btn-gold:hover {
         transform: translateY(-2px) scale(1.04);
-        box-shadow: 0 14px 36px rgba(212, 175, 55, 0.75),
+        box-shadow:
+          0 14px 36px rgba(212, 175, 55, 0.75),
           inset 0 1px 0 rgba(255, 255, 255, 0.8);
       }
 
@@ -361,7 +371,9 @@
         align-items: center;
         gap: 10px;
         z-index: 1200;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
       }
       .whatsapp-float:hover {
         transform: scale(1.05);
@@ -461,7 +473,7 @@
         <br />
         <br />
         <a
-          class="btn"
+          class="btn-gold"
           target="_blank"
           href="https://wa.me/523331713312?text=Hola%2C%20quiero%20Informes!!!."
         >
@@ -513,7 +525,7 @@
           </ul>
           <div style="margin-top: 1.5rem">
             <a
-              class="btn"
+              class="btn-gold"
               target="_blank"
               href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20pagina%20web%20BASICA%20para%20mi%20negocio."
               >Quiero mi Página Web</a
@@ -532,7 +544,7 @@
           </ul>
           <div style="margin-top: 1.5rem">
             <a
-              class="btn"
+              class="btn-gold"
               target="_blank"
               href="https://wa.me/523331713312?text=Hola%2C%20me%20interesa%20una%20pagina%20web%20PRO%20para%20mi%20negocio."
               >Quiero mi Página Web</a
@@ -551,7 +563,7 @@
           </ul>
           <div style="margin-top: 1.5rem">
             <a
-              class="btn"
+              class="btn-gold"
               target="_blank"
               href="https://wa.me/523331713312?text=Hola%2C%20me%20interesa%20una%20pagina%20web%20para%20mi%20negocio%20personalizada."
               >Quiero mi Página Web</a
@@ -565,7 +577,7 @@
       <h2>Haz que tu negocio tenga presencia digital HOY</h2>
       <p>Escríbenos y en pocos días tendrás tu Página Web lista.</p>
       <a
-        class="btn"
+        class="btn-gold"
         target="_blank"
         href="https://wa.me/523331713312?text=Hola%2C%20quiero%20una%20pagina%20web%20para%20mi%20negocio."
       >
@@ -595,7 +607,7 @@
         </div>
 
         <a
-          class="btn"
+          class="btn-gold"
           target="_blank"
           href="https://wa.me/523331713312?text=Hola%2C%20quiero%20Informes%20por%20favor."
         >
