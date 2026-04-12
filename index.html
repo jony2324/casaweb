@@ -1,671 +1,292 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproductor 360°</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; font-family: sans-serif; overflow: hidden; }
 
-    <title>Casa Web | Desarrollo de Páginas Web</title>
+    #menu {
+      position: fixed; inset: 0; z-index: 100;
+      background: linear-gradient(135deg, #0a0a1a, #1a0a2e);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 24px;
+    }
 
-    <meta
-      name="description"
-      content="Casa Web diseña páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
-    />
-    <meta name="robots" content="index,follow" />
-    <meta name="theme-color" content="#111827" />
+    h1 { color: #c8b0ff; font-size: 2rem; font-weight: 300; letter-spacing: 2px; }
+    p  { color: #7060a0; font-size: 0.9rem; }
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://casa-web.com.mx/" />
+    .cards {
+      display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+      max-width: 900px;
+    }
 
-    <!-- Favicons (rutas ABSOLUTAS + cache-busting) -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/assets/logo/logo-tipo.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/assets/logo/logo-tipo.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/assets/logo/logo-tipo.png"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Casa Web" />
-    <meta property="og:title" content="Casa Web | Desarrollo de Páginas Web" />
-    <meta
-      property="og:description"
-      content="Diseñamos páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
-    />
-    <meta property="og:url" content="https://casa-web.com.mx/" />
-    <meta
-      property="og:image"
-      content="https://casa-web.com.mx/assets/logo/logo-tipo.png"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    .card {
+      width: 240px; border-radius: 16px; overflow: hidden;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(120,80,255,0.4); }
+    .card.selected { border-color: #7B5EEA; box-shadow: 0 0 0 3px rgba(123,94,234,0.4); }
 
-    <!-- Twitter Card (URL completa) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Casa Web | Desarrollo de Páginas Web" />
-    <meta
-      name="twitter:description"
-      content="Páginas web profesionales para negocios que quieren más clientes, más ventas y una presencia digital que sí convierte."
-    />
-    <meta
-      name="twitter:image"
-      content="https://casa-web.com.mx/assets/logo/logo-tipo.png"
-    />
+    .thumb {
+      height: 140px; display: flex; align-items: center;
+      justify-content: center; font-size: 3rem; position: relative;
+    }
+    .badge {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,0.6); color: #aaa;
+      font-size: 10px; padding: 2px 6px; border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .card-info { background: #12112a; padding: 14px; }
+    .card-title { color: #e8e0ff; font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .card-sub   { color: #6050a0; font-size: 0.8rem; }
 
-    <style>
-      :root {
-        --primary: #111827;
-        --accent: #2563eb;
-        --bg: #f9fafb;
-        --text: #374151;
-        --muted: #6b7280;
-        --card: #ffffff;
+    #btn-play {
+      padding: 14px 48px; border-radius: 50px;
+      background: #7B5EEA; border: none; color: #fff;
+      font-size: 1rem; cursor: pointer; letter-spacing: 1px;
+      opacity: 0.4; pointer-events: none;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    #btn-play.ready { opacity: 1; pointer-events: all; }
+    #btn-play.ready:hover { background: #9b7ff0; }
 
-        /* 🟡 DORADO REAL */
-        --gold-1: #b8860b;
-        --gold-2: #ffd700;
-        --gold-3: #d4af37;
-      }
+    /* HUD */
+    #hud {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+      padding: 40px 24px 20px;
+      display: none; flex-direction: column; gap: 10px;
+    }
+    #hud.visible { display: flex; }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family:
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          sans-serif;
-      }
-      body {
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.6;
-      }
+    #now-playing { color: #c8b0ff; font-size: 0.9rem; text-align: center; }
 
-      /* Utilidad: oculta visualmente pero mantiene para SEO/lectores */
-      .sr-only {
-        position: absolute !important;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0 !important;
-        margin: -1px !important;
-        overflow: hidden !important;
-        clip: rect(0, 0, 0, 0) !important;
-        white-space: nowrap !important;
-        border: 0 !important;
-      }
+    #progress-wrap {
+      display: flex; align-items: center; gap: 12px;
+    }
+    #progress {
+      flex: 1; height: 4px; background: rgba(255,255,255,0.15);
+      border-radius: 2px; cursor: pointer; position: relative;
+    }
+    #progress-fill {
+      height: 100%; background: #7B5EEA; border-radius: 2px;
+      width: 0%; transition: width 0.5s linear;
+    }
+    .time { color: rgba(255,255,255,0.4); font-size: 11px; min-width: 36px; }
 
-      /* HEADER */
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background: rgba(255, 255, 255, 0.92);
-        backdrop-filter: saturate(180%) blur(10px);
-        border-bottom: 1px solid rgba(17, 24, 39, 0.08);
-      }
-      .topbar-inner {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 0.85rem 1.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-      }
+    .controls { display: flex; gap: 10px; justify-content: center; }
+    .ctrl {
+      padding: 8px 20px; border-radius: 20px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; cursor: pointer; font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+    .ctrl:hover { background: rgba(123,94,234,0.4); }
+    #btn-back { background: rgba(255,255,255,0.05); }
+  </style>
+</head>
+<body>
 
-      /* Solo branding (solo logo) */
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        text-decoration: none;
-        color: var(--primary);
-        font-weight: 800;
-        letter-spacing: 0.2px;
-      }
+<!-- MENÚ -->
+<div id="menu">
+  <h1>🥽 Reproductor 360°</h1>
+  <p>Selecciona una experiencia y presiona reproducir</p>
 
-      /* ✅ LOGO MÁS GRANDE + HOVER */
-      .logo {
-        width: 62px;
-        height: 62px;
-        border-radius: 16px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        /* animación */
-        transform: translateZ(0);
-        transition:
-          transform 0.22s ease,
-          filter 0.22s ease;
-        will-change: transform;
-      }
-      .brand:hover .logo {
-        transform: scale(1.12);
-        filter: brightness(1.05) saturate(1.05);
-      }
-      .logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-      }
-
-      nav {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-      }
-      .navlink {
-        text-decoration: none;
-        color: var(--primary);
-        font-weight: 700;
-        padding: 0.55rem 0.85rem;
-        border-radius: 10px;
-        transition: background 0.2s ease;
-      }
-      .navlink:hover {
-        background: rgba(37, 99, 235, 0.1);
-      }
-
-      /* HERO */
-      header.hero {
-        background: linear-gradient(135deg, var(--primary), #000);
-        color: #fff;
-        padding: 5rem 1.5rem;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-      header.hero video.bg-video {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0.35;
-      }
-      header.hero .content {
-        position: relative;
-        z-index: 2;
-      }
-      header.hero h1 {
-        font-size: 2.8rem;
-        margin-bottom: 1rem;
-      }
-      header.hero p {
-        font-size: 1.2rem;
-        max-width: 760px;
-        margin: 0 auto 2rem;
-      }
-
-      .btn-blue {
-        display: inline-block;
-        background: #2563eb;
-        color: #ffffff;
-        padding: 0.95rem 2.2rem;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: 900;
-        letter-spacing: 0.3px;
-        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease;
-      }
-
-      .btn-blue:hover {
-        transform: translateY(-2px) scale(1.04);
-        box-shadow: 0 14px 36px rgba(37, 99, 235, 0.45);
-      }
-
-      .btn-white {
-        display: inline-block;
-        background: #ffffff;
-        color: #111827;
-        padding: 0.95rem 2.2rem;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: 900;
-        letter-spacing: 0.3px;
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease;
-      }
-
-      .btn-white:hover {
-        transform: translateY(-2px) scale(1.04);
-        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
-      }
-
-      /* 🟡 BOTÓN DORADO PREMIUM (SÓLIDO) */
-      .btn-gold {
-        display: inline-block;
-        background: linear-gradient(
-          135deg,
-          #b8860b 0%,
-          #ffd700 45%,
-          #d4af37 100%
-        );
-        color: #111;
-        padding: 0.95rem 2.2rem;
-        border-radius: 12px;
-        text-decoration: none;
-        font-weight: 900;
-        letter-spacing: 0.3px;
-        background-clip: padding-box;
-        box-shadow:
-          0 8px 22px rgba(212, 175, 55, 0.6),
-          inset 0 1px 0 rgba(255, 255, 255, 0.7);
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .btn-gold::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          120deg,
-          transparent 40%,
-          rgba(255, 255, 255, 0.45),
-          transparent 60%
-        );
-        opacity: 0;
-        transition: opacity 0.4s ease;
-      }
-
-      .btn-gold:hover::before {
-        opacity: 1;
-      }
-
-      .btn-gold:hover {
-        transform: translateY(-2px) scale(1.04);
-        box-shadow:
-          0 14px 36px rgba(212, 175, 55, 0.75),
-          inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      }
-
-      /* LAYOUT */
-      section {
-        padding: 4rem 1.5rem;
-        max-width: 1100px;
-        margin: auto;
-      }
-      .features {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-      }
-      .card {
-        background: var(--card);
-        padding: 2rem;
-        border-radius: 14px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      }
-      .card h3 {
-        margin-bottom: 0.6rem;
-        color: var(--primary);
-      }
-
-      .pricing {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 2rem;
-      }
-      .price {
-        font-size: 2rem;
-        font-weight: 900;
-        margin: 1rem 0;
-        color: var(--primary);
-      }
-      .card ul {
-        margin-top: 1rem;
-        padding-left: 1.1rem;
-      }
-      .card li {
-        margin: 0.4rem 0;
-      }
-
-      /* CTA */
-      .cta {
-        background: var(--primary);
-        color: #fff;
-        text-align: center;
-        padding: 4rem 1.5rem;
-      }
-      .cta h2 {
-        font-size: 2.2rem;
-        margin-bottom: 1rem;
-      }
-      .cta p {
-        max-width: 760px;
-        margin: 0 auto 1.75rem;
-      }
-
-      /* CONTACT */
-      .contact-wrap {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 4rem 1.5rem;
-      }
-      .contact-box {
-        background: #fff;
-        border-radius: 14px;
-        padding: 2.5rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        text-align: center;
-      }
-      .contact-box h2 {
-        color: var(--primary);
-        margin-bottom: 0.75rem;
-        font-size: 2rem;
-      }
-      .contact-box p {
-        margin-bottom: 1rem;
-        color: var(--text);
-        font-size: 1.05rem;
-      }
-      .contact-meta {
-        margin: 1.25rem 0 1.75rem;
-        color: var(--muted);
-        font-weight: 700;
-      }
-
-      footer {
-        text-align: center;
-        padding: 2rem 1rem;
-        font-size: 0.95rem;
-        color: var(--muted);
-      }
-
-      /* WHATSAPP FLOAT */
-      .whatsapp-float {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #25d366;
-        color: white;
-        border-radius: 999px;
-        padding: 14px 18px;
-        font-weight: 900;
-        text-decoration: none;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        z-index: 1200;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-      .whatsapp-float:hover {
-        transform: scale(1.05);
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
-      }
-
-      /* Offset anchors for sticky header */
-      .anchor {
-        scroll-margin-top: 90px;
-      }
-
-      /* Responsive tweaks */
-      @media (max-width: 520px) {
-        header.hero h1 {
-          font-size: 2.2rem;
-        }
-        header.hero p {
-          font-size: 1.05rem;
-        }
-        .topbar-inner {
-          padding: 0.75rem 1rem;
-        }
-        .navlink {
-          padding: 0.5rem 0.7rem;
-        }
-        .whatsapp-float {
-          padding: 12px 14px;
-        }
-        .logo {
-          width: 56px;
-          height: 56px;
-          border-radius: 14px;
-        }
-      }
-    </style>
-
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-P3G7GY5DJY"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-P3G7GY5DJY");
-    </script>
-  </head>
-
-  <body>
-    <!-- Header -->
-    <div class="topbar">
-      <div class="topbar-inner">
-        <a class="brand" href="#home" aria-label="Casa Web Home">
-          <span class="logo" aria-hidden="true">
-            <!-- Logo Retina: necesitas logo-tipo.png y logo@2x.png -->
-            <img
-              src="https://casa-web.com.mx/assets/logo/logo-tipo.png"
-              alt="Casa Web"
-              loading="eager"
-              decoding="async"
-            />
-          </span>
-          <span
-            style="font-size: 0.58rem; font-weight: 900; letter-spacing: 0.5px"
-            ><h1 style="color: #111827; margin: 0">Casa Web</h1>
-          </span>
-        </a>
-
-        <nav>
-          <a class="navlink" href="#home">Home</a>
-          <a class="navlink" href="#contacto">Contacto</a>
-        </nav>
+  <div class="cards" id="cards">
+    <div class="card" data-idx="0" onclick="selectVideo(0)">
+      <div class="thumb" style="background:linear-gradient(135deg,#050018,#3d1279)">
+        🌌<span class="badge">360°</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Cosmos Profundo</div>
+        <div class="card-sub">Espacio · Demo</div>
       </div>
     </div>
 
-    <!-- HOME -->
-    <div id="home" class="anchor"></div>
-    <header class="hero">
-      <!-- VIDEO COMO FONDO COMPLETO -->
-      <video
-        class="bg-video"
-        src="assets/video-landing-4k.mp4"
-        autoplay
-        muted
-        loop
-        playsinline
-      ></video>
-
-      <!-- CONTENIDO ENCIMA DEL VIDEO -->
-      <div class="content">
-        <br />
-        <br />
-        <p><strong>La Inovación,</strong> da forma al mundo.</p>
-        <br />
-        <br />
-        <a
-          class="btn-gold"
-          target="_blank"
-          href="https://wa.me/523322489438?text=Hola%2C%20quiero%20Informes!!!."
-        >
-          Quiero mi página web
-        </a>
+    <div class="card" data-idx="1" onclick="selectVideo(1)">
+      <div class="thumb" style="background:linear-gradient(135deg,#001a0d,#0f6640)">
+        🌊<span class="badge">360°</span>
       </div>
-    </header>
-
-    <section>
-      <h2 style="text-align: center; margin-bottom: 2rem">
-        ¿Por qué Casa Web?
-      </h2>
-
-      <div class="features">
-        <div class="card">
-          <h3>🎯 Enfocadas en Ventas!</h3>
-          <p>
-            Diseñamos páginas pensadas para generar contactos, llamadas y ventas
-            reales.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>⚡ Rápidas y ligeras</h3>
-          <p>Páginas web optimizadas para cargar rápido en móvil y desktop.</p>
-        </div>
-
-        <div class="card">
-          <h3>📱 Funcionan en cualquier dispositivo!</h3>
-          <p>Tu sitio se verá perfecto en celular, tablet y computadora.</p>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2 style="text-align: center; margin-bottom: 2rem">
-        Planes simples y claros
-      </h2>
-
-      <div class="pricing">
-        <div class="card">
-          <h3>Página Básica</h3>
-          <p class="price">$4,499 MXN</p>
-          <ul>
-            <li>✔ Diseño profesional</li>
-            <li>✔ 1 página</li>
-            <li>✔ Responsive</li>
-            <li>✔ Formulario de contacto</li>
-          </ul>
-          <div style="margin-top: 1.5rem">
-            <a
-              class="btn-blue"
-              target="_blank"
-              href="https://wa.me/523322489438?text=Hola%2C%20quiero%20una%20pagina%20web%20BASICA%20para%20mi%20negocio."
-              >Quiero mi Página Web</a
-            >
-          </div>
-        </div>
-
-        <div class="card" style="border: 2px solid var(--accent)">
-          <h3>Página Pro</h3>
-          <p class="price">$7,999 MXN</p>
-          <ul>
-            <li>✔ Diseño premium</li>
-            <li>✔ Copy optimizado</li>
-            <li>✔ CTA estratégicos</li>
-            <li>✔ Integración WhatsApp</li>
-          </ul>
-          <div style="margin-top: 1.5rem">
-            <a
-              class="btn-gold"
-              target="_blank"
-              href="https://wa.me/523322489438?text=Hola%2C%20me%20interesa%20una%20pagina%20web%20PRO%20para%20mi%20negocio."
-              >Quiero mi Página Web</a
-            >
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Páginas Personalizadas</h3>
-          <p class="price">Cotización</p>
-          <ul>
-            <li>✔ Diseño personalizado</li>
-            <li>✔ Integraciones especiales</li>
-            <li>✔ Hosting y dominio</li>
-            <li>✔ Soporte</li>
-          </ul>
-          <div style="margin-top: 1.5rem">
-            <a
-              class="btn-blue"
-              target="_blank"
-              href="https://wa.me/523322489438?text=Hola%2C%20me%20interesa%20una%20pagina%20web%20para%20mi%20negocio%20personalizada."
-              >Quiero mi Página Web</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="cta">
-      <h2>Haz que tu negocio tenga presencia digital HOY</h2>
-      <p>Escríbenos y en pocos días tendrás tu Página Web lista.</p>
-      <a
-        class="btn-white"
-        target="_blank"
-        href="https://wa.me/523322489438?text=Hola%2C%20quiero%20una%20pagina%20web%20para%20mi%20negocio."
-      >
-        Contactar ahora
-      </a>
-    </div>
-
-    <!-- CONTACTO -->
-    <div id="contacto" class="anchor"></div>
-    <div class="contact-wrap">
-      <div class="contact-box">
-        <h2>Contacto</h2>
-        <p>
-          Escríbenos por WhatsApp o envíanos un correo y te respondemos al
-          momento!.
-        </p>
-
-        <div class="contact-meta">
-          WhatsApp: +52 33 2248 9438<br />
-          Correo:
-          <a
-            href="mailto:contacto@casa-web.com.mx"
-            style="color: #2563eb; font-weight: 800"
-          >
-            contacto@casa-web.com.mx
-          </a>
-        </div>
-
-        <a
-          class="btn-blue"
-          target="_blank"
-          href="https://wa.me/523322489438?text=Hola%2C%20quiero%20Informes%20por%20favor."
-        >
-          Contactar ahora
-        </a>
+      <div class="card-info">
+        <div class="card-title">Fondo Marino</div>
+        <div class="card-sub">Naturaleza · Demo</div>
       </div>
     </div>
 
-    <!-- Botón flotante WhatsApp -->
-    <a
-      class="whatsapp-float"
-      target="_blank"
-      href="https://wa.me/523322489438?text=Hola%2C%20quiero%20una%20pagina%20web%20para%20mi%20negocio."
-      aria-label="Abrir WhatsApp"
-    >
-      💬 WhatsApp
-    </a>
+    <div class="card" data-idx="2" onclick="selectVideo(2)">
+      <div class="thumb" style="background:linear-gradient(135deg,#150800,#a04010)">
+        🏜️<span class="badge">360°</span>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Desierto Rojo</div>
+        <div class="card-sub">Aventura · Demo</div>
+      </div>
+    </div>
+  </div>
 
-    <footer>© 2025 Casa Web · Desarrollo de Página Web</footer>
-  </body>
+  <button id="btn-play" onclick="playSelected()">▶ Reproducir en 360°</button>
+</div>
+
+<!-- HUD -->
+<div id="hud">
+  <div id="now-playing">—</div>
+  <div id="progress-wrap">
+    <span class="time" id="time-cur">0:00</span>
+    <div id="progress" onclick="seek(event)">
+      <div id="progress-fill"></div>
+    </div>
+    <span class="time" id="time-tot">—</span>
+  </div>
+  <div class="controls">
+    <button class="ctrl" onclick="togglePause()" id="btn-pp">⏸ Pausa</button>
+    <button class="ctrl" onclick="toggleMute()" id="btn-mute">🔊 Audio</button>
+    <button class="ctrl" id="btn-back" onclick="goBack()">← Menú</button>
+  </div>
+</div>
+
+<!-- ESCENA A-FRAME 360° -->
+<a-scene
+  id="scene"
+  embedded
+  style="display:none; position:fixed; inset:0; width:100%; height:100%;"
+  vr-mode-ui="enabled:true"
+  loading-screen="enabled:false">
+
+  <a-assets>
+    <!-- 
+      IMPORTANTE: Reemplaza estos src con tus videos 360° reales.
+      Deben ser MP4 equirrectangulares (relación 2:1).
+      Para probar localmente pon los videos en la misma carpeta que este HTML.
+    -->
+    <video id="v0" src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
+      crossorigin="anonymous" loop playsinline webkit-playsinline preload="none"></video>
+    <video id="v1" src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
+      crossorigin="anonymous" loop playsinline webkit-playsinline preload="none"></video>
+    <video id="v2" src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
+      crossorigin="anonymous" loop playsinline webkit-playsinline preload="none"></video>
+    <!--
+      Para usar videos locales:
+      <video id="v0" src="nature360.mp4" ...></video>
+      Copia el .mp4 en la misma carpeta que este index.html
+    -->
+  </a-assets>
+
+  <a-videosphere id="sphere" src="#v0" rotation="0 -90 0"></a-videosphere>
+
+  <a-camera look-controls="magicWindowTrackingEnabled:true" wasd-controls="enabled:false">
+    <a-cursor color="#7B5EEA" opacity="0.8"></a-cursor>
+  </a-camera>
+</a-scene>
+
+<script>
+  const VIDEOS = [
+    { title: "Cosmos Profundo", id: "v0" },
+    { title: "Fondo Marino",   id: "v1" },
+    { title: "Desierto Rojo",  id: "v2" },
+  ];
+
+  let selectedIdx = -1;
+  let currentEl   = null;
+  let muted        = false;
+  let progressTimer = null;
+
+  function selectVideo(idx) {
+    selectedIdx = idx;
+    document.querySelectorAll('.card').forEach((c,i) =>
+      c.classList.toggle('selected', i === idx));
+    const btn = document.getElementById('btn-play');
+    btn.classList.add('ready');
+  }
+
+  function playSelected() {
+    if (selectedIdx < 0) return;
+    const v = VIDEOS[selectedIdx];
+
+    // Mostrar escena A-Frame
+    document.getElementById('menu').style.display   = 'none';
+    document.getElementById('scene').style.display  = 'block';
+    document.getElementById('hud').classList.add('visible');
+    document.getElementById('now-playing').textContent = v.title;
+
+    // Cambiar fuente de video en la esfera
+    const sphere = document.getElementById('sphere');
+    sphere.setAttribute('src', '#' + v.id);
+
+    // Reproducir
+    currentEl = document.getElementById(v.id);
+    currentEl.muted = false;
+
+    // Autoplay requiere interacción previa (ya la tuvimos con el clic)
+    currentEl.play().catch(() => {
+      currentEl.muted = true;
+      muted = true;
+      document.getElementById('btn-mute').textContent = '🔇 Sin audio';
+      currentEl.play();
+    });
+
+    // Actualizar duración
+    const updateDur = () => {
+      document.getElementById('time-tot').textContent = fmt(currentEl.duration);
+    };
+    if (currentEl.readyState >= 1) updateDur();
+    else currentEl.addEventListener('loadedmetadata', updateDur, {once:true});
+
+    // Progress timer
+    clearInterval(progressTimer);
+    progressTimer = setInterval(updateProgress, 500);
+  }
+
+  function updateProgress() {
+    if (!currentEl || !currentEl.duration) return;
+    const pct = (currentEl.currentTime / currentEl.duration * 100).toFixed(1);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('time-cur').textContent = fmt(currentEl.currentTime);
+  }
+
+  function seek(e) {
+    if (!currentEl || !currentEl.duration) return;
+    const rect = document.getElementById('progress').getBoundingClientRect();
+    currentEl.currentTime = ((e.clientX - rect.left) / rect.width) * currentEl.duration;
+  }
+
+  function togglePause() {
+    if (!currentEl) return;
+    if (currentEl.paused) {
+      currentEl.play();
+      document.getElementById('btn-pp').textContent = '⏸ Pausa';
+    } else {
+      currentEl.pause();
+      document.getElementById('btn-pp').textContent = '▶ Play';
+    }
+  }
+
+  function toggleMute() {
+    if (!currentEl) return;
+    muted = !muted;
+    currentEl.muted = muted;
+    document.getElementById('btn-mute').textContent = muted ? '🔇 Sin audio' : '🔊 Audio';
+  }
+
+  function goBack() {
+    if (currentEl) { currentEl.pause(); currentEl.currentTime = 0; }
+    clearInterval(progressTimer);
+    document.getElementById('scene').style.display = 'none';
+    document.getElementById('hud').classList.remove('visible');
+    document.getElementById('menu').style.display = 'flex';
+    document.getElementById('progress-fill').style.width = '0%';
+    document.getElementById('btn-pp').textContent = '⏸ Pausa';
+  }
+
+  function fmt(s) {
+    if (!s || isNaN(s)) return '—';
+    return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+  }
+</script>
+</body>
 </html>
