@@ -1,292 +1,631 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reproductor 360°</title>
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+  <!-- A-Frame más reciente -->
+  <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #000; font-family: sans-serif; overflow: hidden; }
 
-    #menu {
-      position: fixed; inset: 0; z-index: 100;
-      background: linear-gradient(135deg, #0a0a1a, #1a0a2e);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 24px;
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: sans-serif;
     }
 
-    h1 { color: #c8b0ff; font-size: 2rem; font-weight: 300; letter-spacing: 2px; }
-    p  { color: #7060a0; font-size: 0.9rem; }
+    body {
+      background: linear-gradient(135deg, #0a0018, #150028);
+    }
+
+    #menu {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 24px;
+      background: linear-gradient(135deg, #090014, #17002d);
+    }
+
+    h1 {
+      color: #c8b0ff;
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    p {
+      color: #7060a0;
+      font-size: 0.95rem;
+      text-align: center;
+    }
 
     .cards {
-      display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
-      max-width: 900px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 980px;
     }
 
     .card {
-      width: 240px; border-radius: 16px; overflow: hidden;
-      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      width: 240px;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
       border: 2px solid transparent;
+      background: #12112a;
     }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(120,80,255,0.4); }
-    .card.selected { border-color: #7B5EEA; box-shadow: 0 0 0 3px rgba(123,94,234,0.4); }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 40px rgba(120, 80, 255, 0.4);
+    }
+
+    .card.selected {
+      border-color: #7B5EEA;
+      box-shadow: 0 0 0 3px rgba(123, 94, 234, 0.35), 0 12px 40px rgba(123, 94, 234, 0.3);
+    }
 
     .thumb {
-      height: 140px; display: flex; align-items: center;
-      justify-content: center; font-size: 3rem; position: relative;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
     }
+
     .badge {
-      position: absolute; top: 8px; right: 8px;
-      background: rgba(0,0,0,0.6); color: #aaa;
-      font-size: 10px; padding: 2px 6px; border-radius: 4px;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #ddd;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
       letter-spacing: 1px;
     }
-    .card-info { background: #12112a; padding: 14px; }
-    .card-title { color: #e8e0ff; font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
-    .card-sub   { color: #6050a0; font-size: 0.8rem; }
+
+    .card-info {
+      background: #12112a;
+      padding: 14px;
+    }
+
+    .card-title {
+      color: #e8e0ff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-sub {
+      color: #6050a0;
+      font-size: 0.8rem;
+    }
 
     #btn-play {
-      padding: 14px 48px; border-radius: 50px;
-      background: #7B5EEA; border: none; color: #fff;
-      font-size: 1rem; cursor: pointer; letter-spacing: 1px;
-      opacity: 0.4; pointer-events: none;
-      transition: opacity 0.2s, background 0.2s;
+      padding: 14px 48px;
+      border-radius: 50px;
+      background: #7B5EEA;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+      opacity: 0.4;
+      pointer-events: none;
+      transition: opacity 0.2s, background 0.2s, transform 0.2s;
     }
-    #btn-play.ready { opacity: 1; pointer-events: all; }
-    #btn-play.ready:hover { background: #9b7ff0; }
+
+    #btn-play.ready {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #btn-play.ready:hover {
+      background: #9b7ff0;
+      transform: translateY(-1px);
+    }
 
     /* HUD */
     #hud {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      background: linear-gradient(transparent, rgba(0,0,0,0.9));
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 120;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.92));
       padding: 40px 24px 20px;
-      display: none; flex-direction: column; gap: 10px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
     }
-    #hud.visible { display: flex; }
 
-    #now-playing { color: #c8b0ff; font-size: 0.9rem; text-align: center; }
+    #hud.visible {
+      display: flex;
+    }
+
+    #now-playing {
+      color: #c8b0ff;
+      font-size: 0.9rem;
+      text-align: center;
+    }
 
     #progress-wrap {
-      display: flex; align-items: center; gap: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    #progress {
-      flex: 1; height: 4px; background: rgba(255,255,255,0.15);
-      border-radius: 2px; cursor: pointer; position: relative;
-    }
-    #progress-fill {
-      height: 100%; background: #7B5EEA; border-radius: 2px;
-      width: 0%; transition: width 0.5s linear;
-    }
-    .time { color: rgba(255,255,255,0.4); font-size: 11px; min-width: 36px; }
 
-    .controls { display: flex; gap: 10px; justify-content: center; }
-    .ctrl {
-      padding: 8px 20px; border-radius: 20px;
-      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-      color: #fff; cursor: pointer; font-size: 0.85rem;
-      transition: background 0.15s;
+    #progress {
+      flex: 1;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
-    .ctrl:hover { background: rgba(123,94,234,0.4); }
-    #btn-back { background: rgba(255,255,255,0.05); }
+
+    #progress-fill {
+      height: 100%;
+      background: #7B5EEA;
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.2s linear;
+    }
+
+    .time {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 12px;
+      min-width: 42px;
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .ctrl {
+      padding: 8px 20px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    .ctrl:hover {
+      background: rgba(123, 94, 234, 0.4);
+      transform: translateY(-1px);
+    }
+
+    #btn-back {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    #scene {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 50;
+      background: #000;
+    }
+
+    /* Botón auxiliar para VR por si quieres verlo claramente también */
+    #btn-enter-vr {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 130;
+      display: none;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(20, 12, 40, 0.85);
+      color: #fff;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+
+    #btn-enter-vr.visible {
+      display: block;
+    }
+
+    #debug {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 130;
+      display: none;
+      max-width: 60vw;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.55);
+      color: #ddd;
+      font-size: 12px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    #debug.visible {
+      display: block;
+    }
   </style>
 </head>
 <body>
 
-<!-- MENÚ -->
-<div id="menu">
-  <h1>🥽 Reproductor 360°</h1>
-  <p>Selecciona una experiencia y presiona reproducir</p>
+  <!-- MENÚ -->
+  <div id="menu">
+    <h1>🥽 Reproductor 360°</h1>
+    <p>Selecciona una experiencia y presiona reproducir</p>
 
-  <div class="cards" id="cards">
-    <div class="card" data-idx="0" onclick="selectVideo(0)">
-      <div class="thumb" style="background:linear-gradient(135deg,#050018,#3d1279)">
-        🌌<span class="badge">360°</span>
+    <div class="cards">
+      <div class="card" data-idx="0" onclick="selectVideo(0)">
+        <div class="thumb" style="background:linear-gradient(135deg,#050018,#3d1279)">
+          🌌<span class="badge">360°</span>
+        </div>
+        <div class="card-info">
+          <div class="card-title">Cosmos Profundo</div>
+          <div class="card-sub">Espacio · Demo</div>
+        </div>
       </div>
-      <div class="card-info">
-        <div class="card-title">Cosmos Profundo</div>
-        <div class="card-sub">Espacio · Demo</div>
+
+      <div class="card" data-idx="1" onclick="selectVideo(1)">
+        <div class="thumb" style="background:linear-gradient(135deg,#001a0d,#0f6640)">
+          🌊<span class="badge">360°</span>
+        </div>
+        <div class="card-info">
+          <div class="card-title">Fondo Marino</div>
+          <div class="card-sub">Naturaleza · Demo</div>
+        </div>
+      </div>
+
+      <div class="card" data-idx="2" onclick="selectVideo(2)">
+        <div class="thumb" style="background:linear-gradient(135deg,#150800,#a04010)">
+          🏜️<span class="badge">360°</span>
+        </div>
+        <div class="card-info">
+          <div class="card-title">Desierto Rojo</div>
+          <div class="card-sub">Aventura · Demo</div>
+        </div>
       </div>
     </div>
 
-    <div class="card" data-idx="1" onclick="selectVideo(1)">
-      <div class="thumb" style="background:linear-gradient(135deg,#001a0d,#0f6640)">
-        🌊<span class="badge">360°</span>
+    <button id="btn-play" onclick="playSelected()">▶ Reproducir en 360°</button>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="now-playing">—</div>
+
+    <div id="progress-wrap">
+      <span class="time" id="time-cur">0:00</span>
+      <div id="progress" onclick="seek(event)">
+        <div id="progress-fill"></div>
       </div>
-      <div class="card-info">
-        <div class="card-title">Fondo Marino</div>
-        <div class="card-sub">Naturaleza · Demo</div>
-      </div>
+      <span class="time" id="time-tot">—</span>
     </div>
 
-    <div class="card" data-idx="2" onclick="selectVideo(2)">
-      <div class="thumb" style="background:linear-gradient(135deg,#150800,#a04010)">
-        🏜️<span class="badge">360°</span>
-      </div>
-      <div class="card-info">
-        <div class="card-title">Desierto Rojo</div>
-        <div class="card-sub">Aventura · Demo</div>
-      </div>
+    <div class="controls">
+      <button class="ctrl" onclick="togglePause()" id="btn-pp">⏸ Pausa</button>
+      <button class="ctrl" onclick="toggleMute()" id="btn-mute">🔊 Audio</button>
+      <button class="ctrl" id="btn-back" onclick="goBack()">← Menú</button>
     </div>
   </div>
 
-  <button id="btn-play" onclick="playSelected()">▶ Reproducir en 360°</button>
-</div>
+  <!-- Botón manual extra por si quieres forzar VR visualmente -->
+  <button id="btn-enter-vr" onclick="enterVRManual()">🥽 Entrar a VR</button>
 
-<!-- HUD -->
-<div id="hud">
-  <div id="now-playing">—</div>
-  <div id="progress-wrap">
-    <span class="time" id="time-cur">0:00</span>
-    <div id="progress" onclick="seek(event)">
-      <div id="progress-fill"></div>
-    </div>
-    <span class="time" id="time-tot">—</span>
-  </div>
-  <div class="controls">
-    <button class="ctrl" onclick="togglePause()" id="btn-pp">⏸ Pausa</button>
-    <button class="ctrl" onclick="toggleMute()" id="btn-mute">🔊 Audio</button>
-    <button class="ctrl" id="btn-back" onclick="goBack()">← Menú</button>
-  </div>
-</div>
+  <!-- Debug opcional -->
+  <div id="debug"></div>
 
-<!-- ESCENA A-FRAME 360° -->
-<a-scene
-  id="scene"
-  embedded
-  style="display:none; position:fixed; inset:0; width:100%; height:100%;"
-  vr-mode-ui="enabled:true"
-  loading-screen="enabled:false">
+  <!-- ESCENA -->
+  <a-scene
+    id="scene"
+    embedded
+    xr-mode-ui="XRMode: vr; enterVREnabled: true"
+    renderer="antialias: true; colorManagement: true"
+    loading-screen="enabled:false"
+    device-orientation-permission-ui="enabled: false"
+  >
+    <a-assets timeout="30000">
+      <!-- Reemplaza estos videos por tus MP4 360 reales -->
+      <video
+        id="v0"
+        src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
+        crossorigin="anonymous"
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+      ></video>
 
-  <a-assets>
-    <!-- 
-      IMPORTANTE: Reemplaza estos src con tus videos 360° reales.
-      Deben ser MP4 equirrectangulares (relación 2:1).
-      Para probar localmente pon los videos en la misma carpeta que este HTML.
-    -->
-    <video id="v0" src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
-      crossorigin="anonymous" loop playsinline webkit-playsinline preload="none"></video>
-    <video id="v1" src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
-      crossorigin="anonymous" loop playsinline webkit-playsinline preload="none"></video>
-    <video id="v2" src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
-      crossorigin="anonymous" loop playsinline webkit-playsinline preload="none"></video>
-    <!--
-      Para usar videos locales:
-      <video id="v0" src="nature360.mp4" ...></video>
-      Copia el .mp4 en la misma carpeta que este index.html
-    -->
-  </a-assets>
+      <video
+        id="v1"
+        src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
+        crossorigin="anonymous"
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+      ></video>
 
-  <a-videosphere id="sphere" src="#v0" rotation="0 -90 0"></a-videosphere>
+      <video
+        id="v2"
+        src="https://cdn.aframe.io/360-video-boilerplate/video/city.mp4"
+        crossorigin="anonymous"
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+      ></video>
+    </a-assets>
 
-  <a-camera look-controls="magicWindowTrackingEnabled:true" wasd-controls="enabled:false">
-    <a-cursor color="#7B5EEA" opacity="0.8"></a-cursor>
-  </a-camera>
-</a-scene>
+    <a-videosphere id="sphere" src="#v0" rotation="0 -90 0"></a-videosphere>
 
-<script>
-  const VIDEOS = [
-    { title: "Cosmos Profundo", id: "v0" },
-    { title: "Fondo Marino",   id: "v1" },
-    { title: "Desierto Rojo",  id: "v2" },
-  ];
+    <a-camera look-controls="magicWindowTrackingEnabled:true" wasd-controls="enabled:false">
+      <a-cursor color="#7B5EEA" opacity="0.8"></a-cursor>
+    </a-camera>
+  </a-scene>
 
-  let selectedIdx = -1;
-  let currentEl   = null;
-  let muted        = false;
-  let progressTimer = null;
+  <script>
+    const VIDEOS = [
+      { title: "Cosmos Profundo", id: "v0" },
+      { title: "Fondo Marino", id: "v1" },
+      { title: "Desierto Rojo", id: "v2" }
+    ];
 
-  function selectVideo(idx) {
-    selectedIdx = idx;
-    document.querySelectorAll('.card').forEach((c,i) =>
-      c.classList.toggle('selected', i === idx));
-    const btn = document.getElementById('btn-play');
-    btn.classList.add('ready');
-  }
+    let selectedIdx = -1;
+    let currentEl = null;
+    let muted = false;
+    let progressTimer = null;
 
-  function playSelected() {
-    if (selectedIdx < 0) return;
-    const v = VIDEOS[selectedIdx];
+    const menuEl = document.getElementById("menu");
+    const hudEl = document.getElementById("hud");
+    const sceneEl = document.getElementById("scene");
+    const sphereEl = document.getElementById("sphere");
+    const btnPlayEl = document.getElementById("btn-play");
+    const btnMuteEl = document.getElementById("btn-mute");
+    const btnPauseEl = document.getElementById("btn-pp");
+    const btnEnterVrEl = document.getElementById("btn-enter-vr");
+    const debugEl = document.getElementById("debug");
 
-    // Mostrar escena A-Frame
-    document.getElementById('menu').style.display   = 'none';
-    document.getElementById('scene').style.display  = 'block';
-    document.getElementById('hud').classList.add('visible');
-    document.getElementById('now-playing').textContent = v.title;
+    function logDebug(msg) {
+      console.log(msg);
+      debugEl.classList.add("visible");
+      debugEl.textContent = msg;
+    }
 
-    // Cambiar fuente de video en la esfera
-    const sphere = document.getElementById('sphere');
-    sphere.setAttribute('src', '#' + v.id);
+    function selectVideo(idx) {
+      selectedIdx = idx;
 
-    // Reproducir
-    currentEl = document.getElementById(v.id);
-    currentEl.muted = false;
+      document.querySelectorAll(".card").forEach((card, i) => {
+        card.classList.toggle("selected", i === idx);
+      });
 
-    // Autoplay requiere interacción previa (ya la tuvimos con el clic)
-    currentEl.play().catch(() => {
-      currentEl.muted = true;
-      muted = true;
-      document.getElementById('btn-mute').textContent = '🔇 Sin audio';
-      currentEl.play();
+      btnPlayEl.classList.add("ready");
+    }
+
+    async function playSelected() {
+      if (selectedIdx < 0) return;
+
+      const v = VIDEOS[selectedIdx];
+      currentEl = document.getElementById(v.id);
+
+      // Pausar cualquier video anterior
+      document.querySelectorAll("video").forEach(video => {
+        if (video !== currentEl) {
+          video.pause();
+          try { video.currentTime = 0; } catch (e) {}
+        }
+      });
+
+      menuEl.style.display = "none";
+      sceneEl.style.display = "block";
+      hudEl.classList.add("visible");
+      btnEnterVrEl.classList.add("visible");
+      document.getElementById("now-playing").textContent = v.title;
+
+      sphereEl.setAttribute("src", "#" + v.id);
+
+      muted = false;
+      currentEl.muted = false;
+      currentEl.setAttribute("playsinline", "");
+      currentEl.setAttribute("webkit-playsinline", "");
+
+      try {
+        await waitSceneReady();
+        await currentEl.play();
+      } catch (err) {
+        console.warn("Primer intento de play falló, se intentará en mute:", err);
+        try {
+          currentEl.muted = true;
+          muted = true;
+          btnMuteEl.textContent = "🔇 Sin audio";
+          await currentEl.play();
+        } catch (err2) {
+          console.error("No se pudo reproducir el video:", err2);
+          logDebug("No se pudo reproducir el video.\nRevisa autoplay, formato MP4 y compatibilidad del archivo.");
+          return;
+        }
+      }
+
+      updateDurationOnceReady();
+
+      clearInterval(progressTimer);
+      progressTimer = setInterval(updateProgress, 250);
+
+      // Intentar entrar a VR automáticamente desde el gesto del usuario
+      tryAutoEnterVR();
+    }
+
+    function waitSceneReady() {
+      return new Promise((resolve) => {
+        if (sceneEl.hasLoaded) {
+          resolve();
+          return;
+        }
+        sceneEl.addEventListener("loaded", () => resolve(), { once: true });
+      });
+    }
+
+    function updateDurationOnceReady() {
+      if (!currentEl) return;
+
+      const updateDur = () => {
+        document.getElementById("time-tot").textContent = fmt(currentEl.duration);
+      };
+
+      if (currentEl.readyState >= 1) {
+        updateDur();
+      } else {
+        currentEl.addEventListener("loadedmetadata", updateDur, { once: true });
+      }
+    }
+
+    async function tryAutoEnterVR() {
+      try {
+        if (sceneEl.enterVR) {
+          await sceneEl.enterVR();
+        }
+      } catch (err) {
+        console.warn("No entró automáticamente a VR:", err);
+        logDebug("El video sí cargó, pero no se pudo entrar automáticamente a VR.\nUsa el botón 'Entrar a VR'.");
+      }
+    }
+
+    async function enterVRManual() {
+      try {
+        await waitSceneReady();
+        if (sceneEl.enterVR) {
+          await sceneEl.enterVR();
+        }
+      } catch (err) {
+        console.error("Falló enterVR manual:", err);
+        logDebug("Falló la entrada manual a VR.\nPuede ser por limitación del navegador o del video.");
+      }
+    }
+
+    function updateProgress() {
+      if (!currentEl || !currentEl.duration || isNaN(currentEl.duration)) return;
+
+      const pct = (currentEl.currentTime / currentEl.duration) * 100;
+      document.getElementById("progress-fill").style.width = pct + "%";
+      document.getElementById("time-cur").textContent = fmt(currentEl.currentTime);
+    }
+
+    function seek(e) {
+      if (!currentEl || !currentEl.duration || isNaN(currentEl.duration)) return;
+
+      const rect = document.getElementById("progress").getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      currentEl.currentTime = ratio * currentEl.duration;
+      updateProgress();
+    }
+
+    async function togglePause() {
+      if (!currentEl) return;
+
+      if (currentEl.paused) {
+        try {
+          await currentEl.play();
+          btnPauseEl.textContent = "⏸ Pausa";
+        } catch (err) {
+          console.error("No se pudo reanudar:", err);
+        }
+      } else {
+        currentEl.pause();
+        btnPauseEl.textContent = "▶ Play";
+      }
+    }
+
+    function toggleMute() {
+      if (!currentEl) return;
+
+      muted = !muted;
+      currentEl.muted = muted;
+      btnMuteEl.textContent = muted ? "🔇 Sin audio" : "🔊 Audio";
+    }
+
+    async function goBack() {
+      clearInterval(progressTimer);
+
+      if (document.fullscreenElement) {
+        try {
+          await document.exitFullscreen();
+        } catch (e) {}
+      }
+
+      if (sceneEl.is && sceneEl.is("vr-mode")) {
+        try {
+          await sceneEl.exitVR();
+        } catch (e) {}
+      }
+
+      if (currentEl) {
+        currentEl.pause();
+        try { currentEl.currentTime = 0; } catch (e) {}
+      }
+
+      sceneEl.style.display = "none";
+      hudEl.classList.remove("visible");
+      btnEnterVrEl.classList.remove("visible");
+      menuEl.style.display = "flex";
+
+      document.getElementById("progress-fill").style.width = "0%";
+      document.getElementById("time-cur").textContent = "0:00";
+      document.getElementById("time-tot").textContent = "—";
+      btnPauseEl.textContent = "⏸ Pausa";
+      btnMuteEl.textContent = "🔊 Audio";
+      debugEl.classList.remove("visible");
+      debugEl.textContent = "";
+    }
+
+    function fmt(s) {
+      if (!s || isNaN(s)) return "—";
+      const min = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return min + ":" + String(sec).padStart(2, "0");
+    }
+
+    // Eventos útiles para depurar Quest / WebXR
+    sceneEl.addEventListener("enter-vr", () => {
+      console.log("Entró a VR");
+      logDebug("Entró a VR correctamente.");
     });
 
-    // Actualizar duración
-    const updateDur = () => {
-      document.getElementById('time-tot').textContent = fmt(currentEl.duration);
-    };
-    if (currentEl.readyState >= 1) updateDur();
-    else currentEl.addEventListener('loadedmetadata', updateDur, {once:true});
+    sceneEl.addEventListener("exit-vr", () => {
+      console.log("Salió de VR");
+    });
 
-    // Progress timer
-    clearInterval(progressTimer);
-    progressTimer = setInterval(updateProgress, 500);
-  }
+    sceneEl.addEventListener("loaded", () => {
+      console.log("A-Frame scene cargada");
+    });
 
-  function updateProgress() {
-    if (!currentEl || !currentEl.duration) return;
-    const pct = (currentEl.currentTime / currentEl.duration * 100).toFixed(1);
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('time-cur').textContent = fmt(currentEl.currentTime);
-  }
-
-  function seek(e) {
-    if (!currentEl || !currentEl.duration) return;
-    const rect = document.getElementById('progress').getBoundingClientRect();
-    currentEl.currentTime = ((e.clientX - rect.left) / rect.width) * currentEl.duration;
-  }
-
-  function togglePause() {
-    if (!currentEl) return;
-    if (currentEl.paused) {
-      currentEl.play();
-      document.getElementById('btn-pp').textContent = '⏸ Pausa';
-    } else {
-      currentEl.pause();
-      document.getElementById('btn-pp').textContent = '▶ Play';
-    }
-  }
-
-  function toggleMute() {
-    if (!currentEl) return;
-    muted = !muted;
-    currentEl.muted = muted;
-    document.getElementById('btn-mute').textContent = muted ? '🔇 Sin audio' : '🔊 Audio';
-  }
-
-  function goBack() {
-    if (currentEl) { currentEl.pause(); currentEl.currentTime = 0; }
-    clearInterval(progressTimer);
-    document.getElementById('scene').style.display = 'none';
-    document.getElementById('hud').classList.remove('visible');
-    document.getElementById('menu').style.display = 'flex';
-    document.getElementById('progress-fill').style.width = '0%';
-    document.getElementById('btn-pp').textContent = '⏸ Pausa';
-  }
-
-  function fmt(s) {
-    if (!s || isNaN(s)) return '—';
-    return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
-  }
-</script>
+    window.addEventListener("error", (e) => {
+      console.error("Error global:", e.message);
+    });
+  </script>
 </body>
 </html>
